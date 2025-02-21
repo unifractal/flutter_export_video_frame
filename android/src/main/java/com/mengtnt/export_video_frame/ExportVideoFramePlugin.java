@@ -18,9 +18,11 @@ import io.flutter.plugin.common.MethodChannel.Result;
 
 public class ExportVideoFramePlugin implements FlutterPlugin, MethodCallHandler {
   private MethodChannel channel;
+  private FlutterPluginBinding flutterPluginBinding; // Store the binding
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+    this.flutterPluginBinding = flutterPluginBinding; // Assign the binding to the field
     channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "export_video_frame");
     channel.setMethodCallHandler(this);
   }
@@ -29,6 +31,7 @@ public class ExportVideoFramePlugin implements FlutterPlugin, MethodCallHandler 
   public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
     channel.setMethodCallHandler(null);
     channel = null;
+    this.flutterPluginBinding = null; // Important: Release the reference
   }
 
   @Override
@@ -58,8 +61,10 @@ public class ExportVideoFramePlugin implements FlutterPlugin, MethodCallHandler 
         PointF waterPoint = null;
         Double scale = 1.0;
         AblumSaver.share().setAlbumName(albumName);
+
         if (call.argument("waterMark") != null && call.argument("alignment") != null) {
           String waterPathKey = call.argument("waterMark");
+          // Use the stored flutterPluginBinding here:
           AssetManager assetManager = flutterPluginBinding.getApplicationContext().getAssets();
           String key = call.argument("waterMark");
           Map<String, Number> rect = call.argument("alignment");
@@ -78,6 +83,7 @@ public class ExportVideoFramePlugin implements FlutterPlugin, MethodCallHandler 
         AblumSaver.share().saveToAlbum(filePath, waterBitMap, waterPoint, scale.floatValue(), result);
         break;
       }
+
       case "exportGifImagePathList": {
         String filePath = call.argument("filePath");
         Number quality = call.argument("quality");
