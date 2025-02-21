@@ -10,7 +10,9 @@ environment:
 
 dependencies:
   media_info:
-    path: ./packages/media_info
+    git:
+      url: https://github.com/MiladAtef/media_info.git
+      ref: main
   flutter:
     sdk: flutter
 
