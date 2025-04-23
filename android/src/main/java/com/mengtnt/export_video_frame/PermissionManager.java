@@ -53,7 +53,7 @@ final class PermissionManager {
 
     boolean isPermissionGranted() {
         if (Build.VERSION.SDK_INT >= 33) {
-            boolean isPermissionGrant = activity.checkSelfPermission("android.permission.READ_MEDIA_IMAGES") == PackageManager.PERMISSION_GRANTED;
+            boolean isPermissionGrant = ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED;
             Log.wtf("PermissionManager","lemon isPermissionGrant : "+isPermissionGrant);
             return isPermissionGrant;
         }
