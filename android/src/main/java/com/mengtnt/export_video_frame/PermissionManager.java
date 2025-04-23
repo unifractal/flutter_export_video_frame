@@ -27,6 +27,8 @@ import android.content.pm.PackageManager;
 import android.app.Activity;
 import android.Manifest;
 import androidx.core.app.ActivityCompat;
+import android.os.Build;
+import android.util.Log;
 
 final class PermissionManager {
     static final int REQUEST_EXTERNAL_STORAGE_PERMISSION = 1000;
@@ -50,6 +52,11 @@ final class PermissionManager {
     }
 
     boolean isPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 33) {
+            boolean isPermissionGrant = activity.checkSelfPermission("android.permission.READ_MEDIA_IMAGES") == PackageManager.PERMISSION_GRANTED;
+            Log.wtf("PermissionManager","lemon isPermissionGrant : "+isPermissionGrant);
+            return isPermissionGrant;
+        }
         Boolean isRead = ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED;
         Boolean isWrite = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
