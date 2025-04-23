@@ -117,7 +117,12 @@ final class ExportImageTask extends AsyncTask<Object,Void,ArrayList<String>> {
         } catch (Exception e) {
             Log.e("Media read error",e.toString());
         }
-        mediaMetadataRetriever.release();
+        try {
+            mediaMetadataRetriever.release();
+        } catch (IOException e) {
+            e.printStackTrace(); // Or handle the exception as needed
+        }
+
         return result;
     }
 
@@ -155,7 +160,12 @@ final class ExportImageTask extends AsyncTask<Object,Void,ArrayList<String>> {
         } catch (Exception e) {
             Log.e("Media read error",e.toString());
         }
-        mediaMetadataRetriever.release();
+       try {
+            mediaMetadataRetriever.release();
+        } catch (IOException e) {
+            e.printStackTrace(); // Or handle the exception as needed
+        }
+
         return result;
     }
 
